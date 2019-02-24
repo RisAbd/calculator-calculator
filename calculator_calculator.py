@@ -78,9 +78,9 @@ class BinaryOperationParser(ActionParser):
         if len(raw) < 2:
             return
         op = raw[0]
-        if op in self.binary_operations:
-            v = int(raw[1:])
-            return BinaryOperation(op, v, self.binary_operations[op])
+        v = raw[1:]
+        if op in self.binary_operations and (v.isdigit() or v[1:].isdigit()):
+            return BinaryOperation(op, int(v), self.binary_operations[op])
 
 
 class Reverse(Action):
