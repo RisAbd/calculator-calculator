@@ -138,6 +138,16 @@ class SwapActionParser(ActionParser):
                 return Swap(*raw.split(sw))
 
 
+class Negotiate(Action, ActionParser):
+    def parse(self, raw):
+        if raw in ('+/-', '+-', ):
+            return self
+    def __call__(self, ctx):
+        ctx.current = -ctx.current
+    def __str__(self):
+        return '+/-'
+
+
 
 class Solution:         # type: T.List[Action]
     
@@ -187,6 +197,7 @@ def parsers():
         DeleteActionParser(),
         AppendParser(),
         SwapActionParser(),
+        Negotiate(),
 
         ReverseActionParser(),
     ]
