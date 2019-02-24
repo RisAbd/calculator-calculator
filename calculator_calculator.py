@@ -232,7 +232,7 @@ class Context:
         return str(self.current)
 
 
-def solve(game) -> T.Set[Solution]:
+def solve(game, *, live=False, any=False) -> T.Set[Solution]:
 
     # actions = parse_actions(game.actions, parsers())
 
@@ -241,7 +241,11 @@ def solve(game) -> T.Set[Solution]:
         s = Solution(initial=game.initial_value, goal=game.goal, actions=actions_variant)
         # print(s)
         if s:
+            if live and s not in solutions:
+                print(s)
             solutions.add(s)
+            if any and solutions:
+                break
 
     return solutions
 
@@ -251,6 +255,9 @@ def main():
     import optparse
 
     parser = optparse.OptionParser(usage='%prog [options] -- MOVES GOAL INTIAL ACTIONS...')
+
+    parser.add_option('--live', '-f', dest='live', default=False, action='store_true', help='print any solution immideately when found')
+    parser.add_option('--short', '--first', dest='short', default=False, action='store_true', help='finish at first found solution')
 
     opts, args = parser.parse_args()
 
@@ -264,7 +271,7 @@ def main():
     g = Game(moves, goal, init, parse_actions(actions, parsers()))
     print(g)
 
-    print(*solve(g), sep='\n')
+    print(*solve(g, live=opts.live, any=opts.short), sep='\n')
 
 
 if __name__ == '__main__':
