@@ -227,10 +227,10 @@ class Context:
 
 def solve(game) -> T.Set[Solution]:
 
-    actions = parse_actions(game.actions, parsers())
+    # actions = parse_actions(game.actions, parsers())
 
     solutions = set()
-    for actions_variant in IT.chain.from_iterable(map(IT.permutations, IT.combinations_with_replacement(actions, game.moves_count))):
+    for actions_variant in IT.chain.from_iterable(map(IT.permutations, IT.combinations_with_replacement(game.actions, game.moves_count))):
         s = Solution(initial=game.initial_value, goal=game.goal, actions=actions_variant)
         # print(s)
         if s:
