@@ -85,7 +85,7 @@ class BinaryOperationParser(ActionParser):
 
 class Reverse(Action):
     def __call__(self, ctx):
-        c = ctx.current
+        c = int(ctx.current)
         ctx.current = int(('-' if c < 0 else '') + str(abs(c))[::-1])
 
 
@@ -113,7 +113,12 @@ class AppendParser(ActionParser):
 class Delete(Action):
     def __call__(self, ctx):
         c = ctx.current
-        ctx.current = int(str(int(c))[:-1] or 0) if c != 0 else 0
+        r = str(int(c))[:-1]
+        if c == 0 or r in ('', '-'):
+            v = 0
+        else:
+            v = int(r)
+        ctx.current = v
 
 
 class DeleteActionParser(ActionParser):
@@ -169,6 +174,8 @@ class Solution:         # type: T.List[Action]
         for a in self.actions:
             try:
                 a(ctx)
+                if ctx.current - int(ctx.current) != 0:
+                    return False
             except ValueError:
                 raise
                 return False
@@ -198,8 +205,8 @@ def parsers():
         AppendParser(),
         SwapActionParser(),
         Negotiate(),
-
         ReverseActionParser(),
+    
     ]
 
 
