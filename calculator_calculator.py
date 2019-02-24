@@ -71,6 +71,7 @@ class BinaryOperationParser(ActionParser):
         '/': lambda a, b: a/b,
         '*': lambda a, b: a*b,
         'x': lambda a, b: a*b,
+        '^': lambda a, b: a**b,
     }
 
     def parse(self, raw):
