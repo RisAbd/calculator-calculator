@@ -19,7 +19,7 @@ class Game:
         return (self.name+' ' if self.name else '') + '{} -> {}: {{{}}} * {}'.format(
             self.initial_value,
             self.goal,
-            ', '.join(map(repr, self.actions)),
+            ', '.join(map(str, self.actions)),
             self.moves_count,
             )
 
@@ -242,7 +242,7 @@ def main():
     moves, goal, init, *actions = args
     moves, goal, init = map(int, [moves, goal, init])
 
-    g = Game(moves, goal, init, actions)
+    g = Game(moves, goal, init, parse_actions(actions, parsers()))
     print(g)
 
     print(*solve(g), sep='\n')
