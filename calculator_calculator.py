@@ -153,6 +153,16 @@ class Negotiate(Action, ActionParser):
         return '+/-'
 
 
+class SumDigits(Action, ActionParser):
+    def parse(self, raw):
+        if raw.lower() in ('sum', 's'):
+            return self
+    def __call__(self, ctx):
+        ctx.current = sum(map(int, (ch for ch in str(ctx.current) if ch.isdigit())))
+    def __str__(self):
+        return 'sum'
+
+
 
 class Solution:         # type: T.List[Action]
     
@@ -206,7 +216,7 @@ def parsers():
         SwapActionParser(),
         Negotiate(),
         ReverseActionParser(),
-    
+        SumDigits(),
     ]
 
 
